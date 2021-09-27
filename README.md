@@ -23,7 +23,7 @@ $ docker-compose up
 
 ライブラリを追加したい場合
 ```
-$ docker-compose run --rm node sh -c "npm install"
+$ docker-compose run --rm node sh -c "cd app/src && npm install <ライブラリ>"
 ```
 
 立ち上がったら `http://localhost:3000` にアクセス

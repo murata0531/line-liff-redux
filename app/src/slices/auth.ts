@@ -20,3 +20,14 @@ const initialState: AuthState = {
   statusMessage: undefined,
   error: undefined,
 };
+
+interface LiffIdToken {
+    liffIdToken?: string;
+}
+  
+interface LINEProfile {
+    userId?: string;
+    displayName?: string;
+    pictureUrl?: string;
+    statusMessage?: string;
+}

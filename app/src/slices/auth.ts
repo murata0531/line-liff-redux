@@ -4,21 +4,21 @@ import liff from "@line/liff";
 const liffId = process.env.REACT_APP_LIFF_ID;
 
 export interface AuthState {
-  liffIdToken?: string;
-  userId?: string;
-  displayName?: string;
-  pictureUrl?: string;
-  statusMessage?: string;
-  error?: SerializedError;
+    liffIdToken?: string;
+    userId?: string;
+    displayName?: string;
+    pictureUrl?: string;
+    statusMessage?: string;
+    error?: SerializedError;
 }
 
 const initialState: AuthState = {
-  liffIdToken: undefined,
-  userId: undefined,
-  displayName: undefined,
-  pictureUrl: undefined,
-  statusMessage: undefined,
-  error: undefined,
+    liffIdToken: undefined,
+    userId: undefined,
+    displayName: undefined,
+    pictureUrl: undefined,
+    statusMessage: undefined,
+    error: undefined,
 };
 
 interface LiffIdToken {
@@ -31,3 +31,23 @@ interface LINEProfile {
     pictureUrl?: string;
     statusMessage?: string;
 }
+
+// LINE Login
+export const getLiffIdToken = createAsyncThunk<LiffIdToken>(
+    "liffIdToken/fetch",
+    async (): Promise<LiffIdToken> => {
+        if (!liffId) {
+            throw new Error("liffId is not defined");
+        }
+        await liff.init({liffId});
+        if (!liff.isLoggedIn()) {
+            // set `redirectUri` to redirect the user to a URL other than the endpoint URL of your LIFF app.
+            liff.login();
+        }
+        const liffIdToken = liff.getIDToken();
+        if (liffIdToken) {
+            return {liffIdToken} as LiffIdToken;
+        }
+        throw new Error("LINE login error");
+    },
+);
